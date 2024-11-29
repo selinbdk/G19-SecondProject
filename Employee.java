@@ -17,7 +17,7 @@ public abstract class Employee {
 	
 	abstract void displayMenu();
 	
-	abstract void updateownProfile();
+	abstract void updateOwnProfile();
 	
 	
 
