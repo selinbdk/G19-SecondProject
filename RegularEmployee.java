@@ -19,6 +19,26 @@ public class RegularEmployee extends Employee {
 	}
 	
 	
+	void displayOwnProfile() {
+		
+		
+	}
+	
+	void displayOwnNonProfile() {
+		
+			
+			
+	}
+
+	@Override
+	void updateownProfile() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	
+	
+	
 	
 
 }

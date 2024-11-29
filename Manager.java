@@ -22,6 +22,13 @@ public class Manager extends Employee {
 				);
 		
 	}
+
+
+	@Override
+	void updateownProfile() {
+		// TODO Auto-generated method stub
+		
+	}
 	
 	
 	

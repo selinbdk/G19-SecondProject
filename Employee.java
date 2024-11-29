@@ -1,5 +1,7 @@
+
 public abstract class Employee {
-    protected int id;
+	
+	protected int id;
 	protected String name;
 	protected String surname;
 	protected String role;
@@ -15,5 +17,8 @@ public abstract class Employee {
 	
 	abstract void displayMenu();
 	
-    
+	abstract void updateownProfile();
+	
+	
+
 }
