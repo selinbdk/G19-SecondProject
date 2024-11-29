@@ -1,20 +1,25 @@
 import java.util.Scanner;
 
 public class StartApp {
-
-    
+	
+	
 	public static void main(String[] args) {
 		
 		Database obj1 = new Database();
 		obj1.displayTable();
 		
-		loginScreen();
+		displayIntro();
+		
 		
 		
 	}
 	
 	
 	public static void displayIntro() {
+		
+		 boolean operationResult=true;
+		 String operation="";
+		 Scanner input= new Scanner(System.in);
 		
 		String[] welcomeMessage= {
 		        "__      _____ _    ___ ___  __  __ ___",
@@ -28,6 +33,52 @@ public class StartApp {
 		 for (String message : welcomeMessage) {
 	            System.out.printf("%s%n", message);
 	        }
+		 
+		 
+		System.out.println();
+	
+		System.out.println(
+				  " [A] Login to the System,\n"
+				+ " [B] Terminate.\n");
+			
+
+			do {
+
+				if(!operationResult){
+					System.out.print("Please enter a valid operation character:");
+
+				}else{
+					System.out.print("Select the action you want to perform:");
+				}
+				operation =input.nextLine();
+				operationResult= ((operation.equals("A")) || (operation.equals("B")));
+				
+			} while (!operationResult);
+
+
+			switch (operation) {
+				case "A":
+					loginScreen();
+					break;
+				case "B":
+					break;
+	
+			}
+		 
+		 
+		 
+		 
+		 
+		 
+		 
+		 
+		 
+		 
+		 
+		 
+		 
+		 
+		 
 		
 	}
 	
@@ -38,10 +89,7 @@ public class StartApp {
 		boolean validInput=true;
 		String username="";
 		String password="";
-		int id=0;
-		String name="";
-		String surname="";
-		String role="";
+		
 		
 		
 		
@@ -88,6 +136,7 @@ public class StartApp {
 		Employee manager = controlObject.checkRole(username,password);
 		
 		if(manager.role.equalsIgnoreCase("manager")) {
+			
 			manager.displayMenu();
 			
 		}else {
@@ -114,25 +163,14 @@ public class StartApp {
 	
 	
 	
+	
+	
+	
+	
+	
+	
+	
+	
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
 }
+
