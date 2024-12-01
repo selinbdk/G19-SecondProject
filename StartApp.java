@@ -17,7 +17,7 @@ public class StartApp {
 	
 	public static void displayIntro() {
 		
-		 boolean operationResult=true;
+		 boolean resultOperation=true;
 		 String operation="";
 		 Scanner input= new Scanner(System.in);
 		
@@ -44,16 +44,16 @@ public class StartApp {
 
 			do {
 
-				if(!operationResult){
+				if(!resultOperation){
 					System.out.print("Please enter a valid operation character:");
 
 				}else{
 					System.out.print("Select the action you want to perform:");
 				}
 				operation =input.nextLine();
-				operationResult= ((operation.equals("A")) || (operation.equals("B")));
+				resultOperation= ((operation.equals("A")) || (operation.equals("B")));
 				
-			} while (!operationResult);
+			} while (!resultOperation);
 
 
 			switch (operation) {
@@ -61,24 +61,11 @@ public class StartApp {
 					loginScreen();
 					break;
 				case "B":
-					break;
+					System.exit(0);
 	
 			}
 		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
+		
 		
 	}
 	
@@ -133,26 +120,15 @@ public class StartApp {
 		}while(!validInput);
 		
 		
-		Employee manager = controlObject.checkRole(username,password);
+		Employee employee = controlObject.checkRole(username,password);
 		
-		if(manager.role.equalsIgnoreCase("manager")) {
-			
-			manager.displayMenu();
-			
-		}else {
-			Employee regularEmployee = controlObject.checkRoleForRegular(username, password);
-			regularEmployee.displayMenu();
+		
+		if(employee!=null) {
+			employee.displayMenu();
 		}
 		
 		
-		
-		
-		
-		
-		
-		
-		
-		
+
 		
 		
 	}
@@ -173,4 +149,3 @@ public class StartApp {
 	
 
 }
-
