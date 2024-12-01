@@ -10,9 +10,9 @@ public class MenuOperations extends Database {
 	public void displayProfileInfo(int employeeId) {
 		
 		try {           
-			 String queryForRole="SELECT employee_password, phone_no, email FROM employees WHERE employee_id =?";
+			 String queryForProfile="SELECT employee_password, phone_no, email FROM employees WHERE employee_id =?";
 	         Connection connection = DriverManager.getConnection(DATABASE_URL, ROOT, ROOT_PASSWORD);                     
-	         PreparedStatement statement =connection.prepareStatement(queryForRole);
+	         PreparedStatement statement =connection.prepareStatement(queryForProfile);
 	         statement.setInt(1,employeeId);
 	     
 	         ResultSet resultSet = statement.executeQuery();
@@ -47,9 +47,9 @@ public class MenuOperations extends Database {
 		
 		
 		try {           
-			 String queryForRole="SELECT employee_username,employee_role,employee_name,employee_surname,dateofbirth,dateofstart FROM employees WHERE employee_id =?";
+			 String queryForNonProfile="SELECT employee_username,employee_role,employee_name,employee_surname,dateofbirth,dateofstart FROM employees WHERE employee_id =?";
 	         Connection connection = DriverManager.getConnection(DATABASE_URL, ROOT, ROOT_PASSWORD);                     
-	         PreparedStatement statement =connection.prepareStatement(queryForRole);
+	         PreparedStatement statement =connection.prepareStatement(queryForNonProfile);
 	         statement.setInt(1,employeeId);
 	     
 	         ResultSet resultSet = statement.executeQuery();
@@ -96,9 +96,9 @@ public class MenuOperations extends Database {
 		
 	
 		try {           
-			 String queryForRole="UPDATE employees SET "+columnName+"=? WHERE employee_id =?";
+			 String queryForUpdate="UPDATE employees SET "+columnName+"=? WHERE employee_id =?";
 	         Connection connection = DriverManager.getConnection(DATABASE_URL, ROOT, ROOT_PASSWORD);                     
-	         PreparedStatement statement =connection.prepareStatement(queryForRole);
+	         PreparedStatement statement =connection.prepareStatement(queryForUpdate);
 	         statement.setString(1,updatedVersion);
 	         statement.setInt(2,employeeId);
 	         
@@ -119,9 +119,9 @@ public class MenuOperations extends Database {
 	public void updateField(int employeeId, String newPassword,String newPhoneNumber, String newEmail) {
 		
 		try {           
-			 String queryForRole="UPDATE employees SET employee_password=?,phone_no=?,email=? WHERE employee_id =?";
+			 String queryForUpdate="UPDATE employees SET employee_password=?,phone_no=?,email=? WHERE employee_id =?";
 	         Connection connection = DriverManager.getConnection(DATABASE_URL, ROOT, ROOT_PASSWORD);                     
-	         PreparedStatement statement =connection.prepareStatement(queryForRole);
+	         PreparedStatement statement =connection.prepareStatement(queryForUpdate);
 	         statement.setString(1,newPassword);
 	         statement.setString(2,newPhoneNumber);
 	         statement.setString(3,newEmail);
