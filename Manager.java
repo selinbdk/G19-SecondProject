@@ -75,12 +75,8 @@ public class Manager extends Employee {
 			
 
 		}
-		
-
-		
+			
 	}
-	
-	
 	
 
 	@Override
@@ -139,11 +135,94 @@ public class Manager extends Employee {
 				break;
 			
 		}
-		
-	
-	
 	
 	}
+
+	@Override
+	public void hireEmployee() {
+	        Scanner input = new Scanner(System.in);
+	        System.out.println("\n**** HIRE EMPLOYEE ****");
+
+	        System.out.print("Enter employee's username: "); //INPUT KONTROLÜ EKLENMELİ
+	        String username = input.nextLine();
+	
+	        System.out.print("Enter employee's role (engineer/technician/intern): "); //INPUT KONTROLÜ EKLENMELİ
+	        String role = input.nextLine();
+	
+	        System.out.print("Enter employee's real name: "); //INPUT KONTROLÜ EKLENMELİ
+	        String name = input.nextLine();
+	
+	        System.out.print("Enter employee's real surname: "); //INPUT KONTROLÜ EKLENMELİ
+	        String surname = input.nextLine();
+	
+	        System.out.print("Enter employee's phone number: ");  //INPUT KONTROLÜ EKLENMELİ
+	        String phoneNumber = input.nextLine(); 
+	
+	        System.out.print("Enter employee's birth date (YYYY-MM-DD): "); //INPUT KONTROLÜ EKLENMELİ
+	        String dob = input.nextLine();
+	
+	        System.out.print("Enter employee's job starting date (YYYY-MM-DD): "); //INPUT KONTROLÜ EKLENMELİ
+	        String startDate = input.nextLine();
+	
+	        System.out.print("Enter employee's email adress: "); //INPUT KONTROLÜ EKLENMELİ
+	        String email = input.nextLine();
+	
+	        String defaultPassword = "newemployee123"; // başta verilen default şifre
+	
+	        String query = "INSERT INTO employees (employee_username, employee_password, employee_role, employee_name, employee_surname, phone_no, dateofbirth, dateofstart, email) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+	
+	        try (Connection connection = DriverManager.getConnection(Database.DATABASE_URL, Database.ROOT, Database.ROOT_PASSWORD);
+	             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+	
+	            preparedStatement.setString(1, username);
+	            preparedStatement.setString(2, defaultPassword);
+	            preparedStatement.setString(3, role);
+	            preparedStatement.setString(4, name);
+	            preparedStatement.setString(5, surname);
+	            preparedStatement.setString(6, phoneNumber);
+	            preparedStatement.setString(7, dob);
+	            preparedStatement.setString(8, startDate);
+	            preparedStatement.setString(9, email);
+	
+	            int rowsInserted = preparedStatement.executeUpdate();
+	            if (rowsInserted > 0) {
+	                System.out.println("Employee hired."); //Hiring is successful
+	            }
+	        } catch (SQLException e) {
+	            System.out.println("Error hiring employee: " + e.getMessage());
+	        }
+	    }
+	 //****************************************************************** */
+    @Override
+    	public void fireEmployee() {
+	        Scanner input = new Scanner(System.in);
+	        System.out.println("\n**** FIRE EMPLOYEE ****");
+	
+	        System.out.print("Enter the username of the employee to fire: "); //INPUT KONTROLÜ EKLENMELİ
+	        String username = input.nextLine();
+	
+	        if (username.equals(this.username)) {
+	            System.out.println("Managers cannot fire themselves!");
+	            return;
+	        }
+	
+	        String query = "DELETE FROM employees WHERE employee_username = ?";
+	
+	        try (Connection connection = DriverManager.getConnection(Database.DATABASE_URL, Database.ROOT, Database.ROOT_PASSWORD);
+	             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+	
+	            preparedStatement.setString(1, username);
+	
+	            int rowsDeleted = preparedStatement.executeUpdate();
+	            if (rowsDeleted > 0) {
+	                System.out.println("Employee fired."); //fired successfully
+	            } else {
+	                System.out.println("No employee found with this username.");
+	            }
+	        } catch (SQLException e) {
+	            System.out.println("Error firing employee: " + e.getMessage());
+	        }
+	    }
 	
 
 	public void case1() {
@@ -157,8 +236,7 @@ public class Manager extends Employee {
 		
 
 		returnPreviousMenu();
-		
-		
+			
 	}
 
 
@@ -204,9 +282,7 @@ public class Manager extends Employee {
 		operations2.updateField(this.id, "phone_no", updatedPhoneNumber);
 		System.out.println("\nThe field has been updated successfully.");
 		
-		returnPreviousMenu();
-		
-		
+		returnPreviousMenu();	
 		
 	}
 
@@ -221,8 +297,7 @@ public class Manager extends Employee {
 		System.out.println("\nThe field has been updated successfully.");
 		
 		returnPreviousMenu();
-		
-		
+			
 	}
 
 
@@ -269,7 +344,6 @@ public class Manager extends Employee {
 		
 		
 	}
-	
 	
 
 	public void returnPreviousMenu() {
@@ -348,18 +422,7 @@ public class Manager extends Employee {
 	}
 
 		
-		
-		
-		
-		
-		
-		
-		
-		
 	
-	
-	
-		
 	}
 	
 	
