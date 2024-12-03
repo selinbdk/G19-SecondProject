@@ -2,7 +2,10 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Scanner;
 
 public class MenuOperations extends Database {
 	
@@ -142,9 +145,211 @@ public class MenuOperations extends Database {
 	}
 	
 	
+	public void hireEmployee() {
+        Scanner input = new Scanner(System.in);
+        System.out.println("\n**** HIRE EMPLOYEE ****");
+
+        System.out.print("Enter employee's username: "); //INPUT KONTROLÜ EKLENMELİ
+        String username = input.nextLine();
+
+        System.out.print("Enter employee's role (engineer/technician/intern): "); //INPUT KONTROLÜ EKLENMELİ
+        String role = input.nextLine();
+
+        System.out.print("Enter employee's real name: "); //INPUT KONTROLÜ EKLENMELİ
+        String name = input.nextLine();
+
+        System.out.print("Enter employee's real surname: "); //INPUT KONTROLÜ EKLENMELİ
+        String surname = input.nextLine();
+
+        System.out.print("Enter employee's phone number: ");  //INPUT KONTROLÜ EKLENMELİ
+        String phoneNumber = input.nextLine(); 
+
+        System.out.print("Enter employee's birth date (YYYY-MM-DD): "); //INPUT KONTROLÜ EKLENMELİ
+        String dob = input.nextLine();
+
+        System.out.print("Enter employee's job starting date (YYYY-MM-DD): "); //INPUT KONTROLÜ EKLENMELİ
+        String startDate = input.nextLine();
+
+        System.out.print("Enter employee's email adress: "); //INPUT KONTROLÜ EKLENMELİ
+        String email = input.nextLine();
+
+        String defaultPassword = "newemployee123"; // başta verilen default şifre
+
+        String query = "INSERT INTO employees (employee_username, employee_password, employee_role, employee_name, employee_surname, phone_no, dateofbirth, dateofstart, email) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        try (Connection connection = DriverManager.getConnection(DATABASE_URL, ROOT, ROOT_PASSWORD);
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            preparedStatement.setString(1, username);
+            preparedStatement.setString(2, defaultPassword);
+            preparedStatement.setString(3, role);
+            preparedStatement.setString(4, name);
+            preparedStatement.setString(5, surname);
+            preparedStatement.setString(6, phoneNumber);
+            preparedStatement.setString(7, dob);
+            preparedStatement.setString(8, startDate);
+            preparedStatement.setString(9, email);
+
+            int rowsInserted = preparedStatement.executeUpdate();
+            if (rowsInserted > 0) {
+                System.out.println("Employee hired."); //Hiring is successful
+            }
+        } catch (SQLException e) {
+            System.out.println("Error hiring employee: " + e.getMessage());
+        }
+    }
 	
 	
 	
+	public void fireEmployee(String managerUsername) {
+        Scanner input = new Scanner(System.in);
+        System.out.println("\n**** FIRE EMPLOYEE ****");
+
+        System.out.print("Enter the username of the employee to fire: "); //INPUT KONTROLÜ EKLENMELİ
+        String username = input.nextLine();
+
+        if (username.equals(managerUsername)) {
+            System.out.println("Managers cannot fire themselves!");
+            return;
+        }
+
+        String query = "DELETE FROM employees WHERE employee_username = ?";
+
+        try (Connection connection = DriverManager.getConnection(DATABASE_URL, ROOT, ROOT_PASSWORD);
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            preparedStatement.setString(1, username);
+
+            int rowsDeleted = preparedStatement.executeUpdate();
+            if (rowsDeleted > 0) {
+                System.out.println("Employee fired."); //fired successfully
+            } else {
+                System.out.println("No employee found with this username.");
+            }
+        } catch (SQLException e) {
+            System.out.println("Error firing employee: " + e.getMessage());
+        }
+    }
+
+	
+	
+	public void displayAllEmployees() {
+		
+
+		try {           
+			 String queryForDisplayEmployee="SELECT employee_username,employee_role,employee_name,employee_surname,phone_no,dateofbirth,dateofstart,email FROM employees";
+	         Connection connection = DriverManager.getConnection(DATABASE_URL, ROOT, ROOT_PASSWORD);                               
+	         Statement statement = connection.createStatement();       
+	         
+	         
+	         ResultSet resultSet = statement.executeQuery(queryForDisplayEmployee);
+	         ResultSetMetaData metaData = resultSet.getMetaData();
+	         int numberOfColumns = metaData.getColumnCount();     
+	         
+	        	
+	        	System.out.println("\nALL EMPLOYEES\n");
+	        	 for (int i = 1; i <= numberOfColumns; i++) {
+	 	            System.out.printf("%20s\t", metaData.getColumnName(i));
+	 	            }
+	 	         System.out.println();
+	 	         System.out.printf(" ***********************************************************************************************************************************************************************************************************");
+	 	         System.out.println();
+	 	         
+	 	         // display query results
+	 	         while (resultSet.next()) {
+	 	            for (int i = 1; i <= numberOfColumns; i++) {
+	 	               System.out.printf("%20s\t", resultSet.getObject(i));
+	 	               }
+	 	            System.out.println();
+	 	            System.out.printf(" ***********************************************************************************************************************************************************************************************************  ");
+	 	            System.out.println();
+	 	         
+	 	         }
+	    
+			}catch(SQLException sqlException)
+			{
+				sqlException.printStackTrace();
+			
+			}
+		
+		
+
+	}
+	
+
+	public void displayEmployeesWithRole(String displayedRole) {
+		
+
+		try {           
+			 String queryForDisplayEmployeeWithRole="SELECT employee_username,employee_role,employee_name,employee_surname,phone_no,dateofbirth,dateofstart,email FROM employees WHERE LOWER(employee_role)=LOWER(?)";
+	        
+	         Connection connection = DriverManager.getConnection(DATABASE_URL, ROOT, ROOT_PASSWORD);                     
+	         PreparedStatement statement =connection.prepareStatement(queryForDisplayEmployeeWithRole);
+	         statement.setString(1,displayedRole);
+	         
+	         
+	    
+	         ResultSet resultSet = statement.executeQuery();
+	         ResultSetMetaData metaData = resultSet.getMetaData();
+	         int numberOfColumns = metaData.getColumnCount();     
+	         
+	        	
+	        	System.out.println("\nALL EMPLOYEES WITH THE "+displayedRole.toUpperCase()+" ROLE");
+	        	 for (int i = 1; i <= numberOfColumns; i++) {
+	 	            System.out.printf("%20s\t", metaData.getColumnName(i));
+	 	            }
+	 	         System.out.println();
+	 	         System.out.printf(" ***********************************************************************************************************************************************************************************************************");
+	 	         System.out.println();
+	 	         
+	 	         // display query results
+	 	         while (resultSet.next()) {
+	 	            for (int i = 1; i <= numberOfColumns; i++) {
+	 	               System.out.printf("%20s\t", resultSet.getObject(i));
+	 	               }
+	 	            System.out.println();
+	 	            System.out.printf(" ***********************************************************************************************************************************************************************************************************  ");
+	 	            System.out.println();
+	 	         
+	 	         }
+	    
+			}catch(SQLException sqlException)
+			{
+				sqlException.printStackTrace();
+			
+			}
+		
+		
+		
+		
+		
+	}
+
+
+	
+	
+	
+	public void displayEmployeesWithUsername() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	
+
+	public void updateEmployeeNonProfile() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+
+	public void algorithms() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+
 	
 	
 	

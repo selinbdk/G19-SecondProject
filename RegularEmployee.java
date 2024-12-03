@@ -2,8 +2,8 @@ import java.util.Scanner;
 
 public class RegularEmployee extends Employee {
 	
-	RegularEmployee(int id,String name, String surname, String role){
-		super(id,name,surname,role);
+	RegularEmployee(int id,String username,String name, String surname, String role){
+		super(id,username,name,surname,role);
 	}
 
 	@Override

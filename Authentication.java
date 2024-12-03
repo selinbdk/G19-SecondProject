@@ -4,6 +4,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Scanner;
 
 public class Authentication extends Database {
 	
@@ -66,12 +67,12 @@ public class Authentication extends Database {
 	        	
 	        	if(role.equalsIgnoreCase("manager")) {
 	    			
-	        		employee = new Manager(id,name, surname,role);
+	        		employee = new Manager(id,username,name, surname,role);
 	        	
 	        	
 	        	}
 	        	else {
-	        		employee = new RegularEmployee(id,name, surname,role);
+	        		employee = new RegularEmployee(id,username,name, surname,role);
 	        		
 	        	}
 	    		
