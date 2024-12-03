@@ -329,18 +329,91 @@ public class MenuOperations extends Database {
 	
 	
 	
-	public void displayEmployeesWithUsername() {
+	
 		// TODO Auto-generated method stub
+		public void displayEmployeesWithUsername(String username) {
+			try {
+				String query = "SELECT employee_username, employee_role, employee_name, employee_surname, dateofbirth, dateofstart, email FROM employees WHERE employee_username = ?";
+				Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/firm_management", "root", "");
+				PreparedStatement preparedStatement = connection.prepareStatement(query);
+				preparedStatement.setString(1, username);
+				ResultSet resultSet = preparedStatement.executeQuery();
+				ResultSetMetaData metaData = resultSet.getMetaData();
+				int columnCount = metaData.getColumnCount();
 		
-	}
-
+				System.out.println("\nEMPLOYEE INFORMATION FOR USERNAME: " + username);
+				for (int i = 1; i <= columnCount; ++i) {
+					System.out.printf("%20s\t", metaData.getColumnName(i));
+				}
+				System.out.println();
+				System.out.printf(" ***********************************************************************************************************************************************************************************************************");
+				System.out.println();
+		
+				if (resultSet.next()) {
+					for (int i = 1; i <= columnCount; ++i) {
+						System.out.printf("%20s\t", resultSet.getObject(i));
+					}
+					System.out.println();
+				} else {
+					System.out.println("\nNo employee found with the username: " + username);
+				}
+		
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		
 	
 
-	public void updateEmployeeNonProfile() {
-		// TODO Auto-generated method stub
-		
-	}
+	
+	// TODO Auto-generated method stub
+	public void updateSingleField(int employeeId, String fieldName, String newValue) {
+    try {
+        String query = "UPDATE employees SET " + fieldName + " = ? WHERE employee_id = ?";
+        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/firm_management", "root", "");
+        PreparedStatement preparedStatement = connection.prepareStatement(query);
+        preparedStatement.setString(1, newValue);
+        preparedStatement.setInt(2, employeeId);
 
+        int rowsAffected = preparedStatement.executeUpdate();
+        if (rowsAffected > 0) {
+            System.out.println("Employee field \"" + fieldName + "\" updated successfully.");
+        } else {
+            System.out.println("No employee found with the given ID: " + employeeId);
+        }
+    } catch (SQLException e) {
+        System.out.println("Error updating field \"" + fieldName + "\": " + e.getMessage());
+    }
+}
+
+	public void updateMultipleFields(int employeeId, String newName, String newSurname, String newRole, String newPhoneNumber) {
+    try {
+        String query = "UPDATE employees SET "
+                     + "employee_name = IFNULL(?, employee_name), "
+                     + "employee_surname = IFNULL(?, employee_surname), "
+                     + "employee_role = IFNULL(?, employee_role), "
+                     + "phone_no = IFNULL(?, phone_no) "
+                     + "WHERE employee_id = ?";
+        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/firm_management", "root", "");
+        PreparedStatement preparedStatement = connection.prepareStatement(query);
+        
+        preparedStatement.setString(1, newName);
+        preparedStatement.setString(2, newSurname);
+        preparedStatement.setString(3, newRole);
+        preparedStatement.setString(4, newPhoneNumber);
+        preparedStatement.setInt(5, employeeId);
+
+        int rowsAffected = preparedStatement.executeUpdate();
+        if (rowsAffected > 0) {
+            System.out.println("Employee information updated successfully.");
+        } else {
+            System.out.println("No employee found with the given ID: " + employeeId);
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+}
 
 
 
