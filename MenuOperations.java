@@ -205,7 +205,7 @@ public class MenuOperations extends Database {
         Scanner input = new Scanner(System.in);
         System.out.println("\n**** FIRE EMPLOYEE ****");
 
-        System.out.print("Enter the username of the employee to fire: "); //INPUT KONTROLÜ EKLENMELİ
+        System.out.print("Enter the username of the employee to fire: "); 
         String username = input.nextLine();
 
         if (username.equals(managerUsername)) {
